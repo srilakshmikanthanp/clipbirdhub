@@ -1,0 +1,124 @@
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.liquibase:liquibase-core:4.31.1"
+  }
+}
+
+plugins {
+  id 'org.jetbrains.kotlin.jvm' version '1.9.25'
+  id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25'
+  id 'org.springframework.boot' version '3.4.0'
+  id 'io.spring.dependency-management' version '1.1.6'
+  id 'org.jetbrains.kotlin.plugin.jpa' version '1.9.25'
+  id "org.jetbrains.kotlin.plugin.noarg" version "2.1.0"
+  id "org.jetbrains.kotlin.kapt" version "2.1.0"
+  id 'org.liquibase.gradle' version '3.0.2'
+}
+
+group = 'com.srilakshmikanthanp.clipbirdhub'
+version = '0.0.1'
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(21)
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+configurations {
+  liquibaseRuntime.extendsFrom runtimeClasspath
+}
+
+dependencies {
+  annotationProcessor "org.mapstruct.extensions.spring:mapstruct-spring-extensions:1.1.2"
+  developmentOnly 'org.springframework.boot:spring-boot-devtools'
+  implementation "org.mapstruct.extensions.spring:mapstruct-spring-annotations:1.1.2"
+  implementation "org.springframework.boot:spring-boot-starter-security"
+  implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+  implementation 'com.google.code.gson:gson:2.11.0'
+  implementation 'org.jetbrains.kotlin:kotlin-reflect'
+  implementation 'org.mapstruct:mapstruct:1.6.3'
+  implementation 'org.postgresql:postgresql'
+  implementation 'org.hibernate.orm:hibernate-spatial:6.6.4.Final'
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  implementation 'org.springframework.boot:spring-boot-starter-mail:3.4.1'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+  implementation 'org.springframework.boot:spring-boot-starter-validation:3.4.0'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-webflux'
+  implementation 'org.springframework.boot:spring-boot-starter-websocket'
+  implementation 'org.liquibase:liquibase-core:4.31.1'
+  implementation("com.google.guava:guava:33.4.8-jre")
+  kapt 'org.mapstruct:mapstruct-processor:1.6.3'
+  runtimeOnly("org.aspectj:aspectjweaver:1.9.22.1")
+  testAnnotationProcessor "org.mapstruct.extensions.spring:mapstruct-spring-extensions:1.1.2"
+  testImplementation "org.mapstruct.extensions.spring:mapstruct-spring-test-extensions:1.1.2"
+  testImplementation 'com.h2database:h2:2.3.232'
+  testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.security:spring-security-test'
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+  liquibaseRuntime 'org.liquibase.ext:liquibase-hibernate6:4.31.1'
+  liquibaseRuntime 'info.picocli:picocli:4.6.1'
+  liquibaseRuntime sourceSets.main.output
+}
+
+kotlin {
+  compilerOptions {
+    freeCompilerArgs.addAll '-Xjsr305=strict'
+  }
+}
+
+kapt {
+  keepJavacAnnotationProcessors = true
+}
+
+noArg {
+  annotation("com.srilakshmikanthanp.clipbirdhub.common.annotations.NoArgConstructor")
+  annotation("jakarta.persistence.Entity")
+  annotation("jakarta.persistence.Embeddable")
+  annotation("jakarta.persistence.MappedSuperclass")
+}
+
+allOpen {
+  annotation 'jakarta.persistence.Embeddable'
+  annotation 'jakarta.persistence.Entity'
+  annotation 'jakarta.persistence.MappedSuperclass'
+}
+
+tasks.named('test') {
+  useJUnitPlatform()
+}
+
+generateChangelog.dependsOn compileJava
+diff.dependsOn compileJava
+diffChangelog.dependsOn compileJava
+
+Properties applicationProps = new Properties()
+applicationProps.load(new FileInputStream("$project.rootDir/src/main/resources/application.properties"))
+
+Properties env = new Properties()
+env.load(new FileInputStream("$project.rootDir/.env"))
+
+liquibase {
+  activities {
+    register("main") {
+      def timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+      referenceUrl "hibernate:spring:com.srilakshmikanthanp.clipbirdhub?dialect=" + applicationProps.getProperty('spring.jpa.properties.hibernate.dialect') + '&hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
+      changelogFile "$project.rootDir/src/main/resources/db/changelog/local.logs/${timestamp}.xml"
+      url env.getProperty('MASTER_DB_URL')
+      username env.getProperty('MASTER_DB_USERNAME')
+      password env.getProperty('MASTER_DB_PASSWORD')
+    }
+  }
+}

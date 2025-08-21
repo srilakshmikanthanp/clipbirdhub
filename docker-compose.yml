@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - BACKEND_URL=${BACKEND_URL}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MASTER_DB_URL=${MASTER_DB_URL}
+      - MASTER_DB_USERNAME=${MASTER_DB_USERNAME}
+      - MASTER_DB_PASSWORD=${MASTER_DB_PASSWORD}
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: 2001:db8::/64
