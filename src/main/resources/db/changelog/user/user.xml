@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet author="srilakshmikanthanp" id="create-user-table">
+    <createTable tableName="user">
+      <column name="id" type="VARCHAR(255)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user"/>
+      </column>
+      <column name="avatar" type="VARCHAR(255)"/>
+      <column name="created_at" type="TIMESTAMP(6) WITH TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="email" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="first_name" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_active" type="BOOLEAN">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_name" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="password" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_verified" type="BOOLEAN">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_at" type="TIMESTAMP(6) WITH TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="user_name" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="srilakshmikanthanp" id="unique-constraint-on-user_name-in-user">
+    <addUniqueConstraint
+      columnNames="user_name"
+      constraintName="uc_user_user_name"
+      tableName="user"
+    />
+  </changeSet>
+
+  <changeSet author="srilakshmikanthanp" id="unique-constraint-on-email-in-user">
+    <addUniqueConstraint
+      columnNames="email"
+      constraintName="uc_user_email"
+      tableName="user"
+    />
+  </changeSet>
+
+</databaseChangeLog>

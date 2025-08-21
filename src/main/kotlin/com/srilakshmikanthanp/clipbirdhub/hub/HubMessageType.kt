@@ -1,0 +1,12 @@
+package com.srilakshmikanthanp.clipbirdhub.hub
+
+enum class HubMessageType {
+  CLIPBOARD_DELIVER,
+  CLIPBOARD_SEND,
+  DEVICE_JOINED,
+  DEVICE_LEFT,
+  DEVICE_UPDATED,
+  NONCE_CHALLENGE_REQUEST,
+  NONCE_CHALLENGE_RESPONSE,
+  HUB_DEVICES,
+}

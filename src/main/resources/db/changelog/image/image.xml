@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet author="srilakshmikanthanp" id="create-image-table">
+    <createTable tableName="image">
+      <column name="id" type="VARCHAR(255)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_image"/>
+      </column>
+      <column name="blob" type="BYTEA">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="TIMESTAMP(6) WITH TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="name" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_at" type="TIMESTAMP(6) WITH TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="uploaded_by_user_id" type="VARCHAR(255)"/>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="srilakshmikanthanp" id="foreign-key-constraint-on-uploaded_by_user_id-in-image">
+    <addForeignKeyConstraint
+      baseColumnNames="uploaded_by_user_id"
+      baseTableName="image"
+      constraintName="fk_image_uploaded_by_user_id"
+      referencedColumnNames="id"
+      referencedTableName="user"
+      validate="true"
+    />
+  </changeSet>
+
+</databaseChangeLog>
