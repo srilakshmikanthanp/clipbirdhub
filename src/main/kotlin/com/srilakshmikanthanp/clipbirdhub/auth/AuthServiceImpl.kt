@@ -42,7 +42,11 @@ class AuthServiceImpl(
       .subject(authentication.name)
       .build()
     val params = JwtEncoderParameters.from(claims)
-    return AuthToken(token = jwtEncoder.encode(params).tokenValue)
+    return AuthToken(
+      token = jwtEncoder.encode(params).tokenValue,
+      issuedAt = now,
+      expiry = claims.expiresAt!!
+    )
   }
 
   override fun forgotPassword(userName: String) {

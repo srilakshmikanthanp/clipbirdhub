@@ -8,6 +8,7 @@
 
   <include file="user/user.xml" relativeToChangelogFile="true"/>
   <include file="image/image.xml" relativeToChangelogFile="true"/>
+  <include file="session/session.xml" relativeToChangelogFile="true"/>
   <include file="nonce/nonce.xml" relativeToChangelogFile="true"/>
   <include file="device/device.xml" relativeToChangelogFile="true"/>
 

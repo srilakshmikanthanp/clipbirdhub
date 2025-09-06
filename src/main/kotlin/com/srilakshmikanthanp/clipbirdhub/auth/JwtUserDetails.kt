@@ -7,8 +7,8 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.oauth2.jwt.Jwt
 
 class JwtUserDetails(
-  private val jwt: Jwt,
-  private val principal: UserPrincipal
+  private val principal: UserPrincipal,
+  val jwt: Jwt,
 ) : AbstractAuthenticationToken(listOf<GrantedAuthority>()) {
 
   class JwtUserDetailsConverter(
@@ -16,9 +16,8 @@ class JwtUserDetails(
   ) : Converter<Jwt, JwtUserDetails> {
     override fun convert(jwt: Jwt): JwtUserDetails {
       val user = userService.getByEmail(jwt.subject)
-      return JwtUserDetails(jwt, object: UserPrincipal {
-        override val user = user
-      })
+      val principal = object: UserPrincipal { override val user = user }
+      return JwtUserDetails(principal ,jwt)
     }
   }
 

@@ -2,9 +2,10 @@ package com.srilakshmikanthanp.clipbirdhub.common.config
 
 import com.srilakshmikanthanp.clipbirdhub.auth.AppUserDetailsService
 import com.srilakshmikanthanp.clipbirdhub.auth.AuthConstants
-import com.srilakshmikanthanp.clipbirdhub.auth.AuthService
 import com.srilakshmikanthanp.clipbirdhub.auth.JwtUserDetails
 import com.srilakshmikanthanp.clipbirdhub.common.filters.FilterExceptionHandler
+import com.srilakshmikanthanp.clipbirdhub.session.SessionFilter
+import com.srilakshmikanthanp.clipbirdhub.session.SessionService
 import com.srilakshmikanthanp.clipbirdhub.user.UserService
 import com.srilakshmikanthanp.clipbirdhub.user.UserVerificationFilter
 import org.springframework.beans.factory.annotation.Qualifier
@@ -20,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter
@@ -32,6 +34,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector
 @Configuration
 class SecurityConfig(
   private val handlerMappingIntrospector: HandlerMappingIntrospector,
+  private val sessionService: SessionService,
   private val userService: UserService,
   private val passwordEncoder: PasswordEncoder,
   @Qualifier("handlerExceptionResolver")
@@ -56,6 +59,10 @@ class SecurityConfig(
       .addFilterBefore(
         FilterExceptionHandler(resolver),
         UsernamePasswordAuthenticationFilter::class.java
+      )
+      .addFilterAfter(
+        SessionFilter(sessionService),
+        BearerTokenAuthenticationFilter::class.java
       )
       .addFilterAfter(
         UserVerificationFilter(handlerMappingIntrospector),

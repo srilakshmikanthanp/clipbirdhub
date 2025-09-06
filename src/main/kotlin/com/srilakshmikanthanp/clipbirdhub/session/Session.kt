@@ -1,4 +1,4 @@
-package com.srilakshmikanthanp.clipbirdhub.device
+package com.srilakshmikanthanp.clipbirdhub.session
 
 import com.srilakshmikanthanp.clipbirdhub.user.User
 import jakarta.persistence.Column
@@ -15,23 +15,23 @@ import org.hibernate.annotations.UpdateTimestamp
 import java.time.Instant
 
 @Entity
-data class Device (
+data class Session(
   @Column(nullable = false)
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   var id: String? = null,
 
-  @Column(nullable = false)
-  var name: String,
+  @Column(nullable = true)
+  var userAgent: String? = null,
 
   @Column(nullable = false)
-  var type: DeviceType,
+  var ipAddress: String,
+
+  @Column(columnDefinition = "TEXT", nullable = false, unique = true)
+  var token: String,
 
   @Column(nullable = false)
-  var publicKey: String,
-
-  @Column(nullable = false)
-  var isOnline: Boolean,
+  var expiry: Instant,
 
   @ManyToOne
   @OnDelete(OnDeleteAction.CASCADE)

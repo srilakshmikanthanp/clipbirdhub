@@ -33,6 +33,7 @@
       referencedColumnNames="id"
       referencedTableName="user"
       validate="true"
+      onDelete="SET NULL"
     />
   </changeSet>
 

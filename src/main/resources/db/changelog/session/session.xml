@@ -5,40 +5,46 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-  <changeSet author="srilakshmikanthanp" id="create-device-table">
-    <createTable tableName="device">
+  <changeSet author="srilakshmikanthanp" id="create-session-table">
+    <createTable tableName="session">
       <column name="id" type="VARCHAR(255)">
-        <constraints nullable="false" primaryKey="true" primaryKeyName="devicePK"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="sessionPK"/>
       </column>
       <column name="created_at" type="TIMESTAMP(6) WITH TIME ZONE">
         <constraints nullable="false"/>
       </column>
-      <column name="is_online" type="BOOLEAN">
+      <column name="expiry" type="TIMESTAMP(6) WITH TIME ZONE">
         <constraints nullable="false"/>
       </column>
-      <column name="name" type="VARCHAR(255)">
+      <column name="ip_address" type="VARCHAR(255)">
         <constraints nullable="false"/>
       </column>
-      <column name="public_key" type="VARCHAR(255)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="type" type="SMALLINT">
+      <column name="token" type="TEXT">
         <constraints nullable="false"/>
       </column>
       <column name="updated_at" type="TIMESTAMP(6) WITH TIME ZONE">
         <constraints nullable="false"/>
       </column>
+      <column name="user_agent" type="VARCHAR(255)"/>
       <column name="user_id" type="VARCHAR(255)">
         <constraints nullable="false"/>
       </column>
     </createTable>
   </changeSet>
 
-  <changeSet author="srilakshmikanthanp" id="foreign-key-constraint-on-user_id-in-device">
+  <changeSet author="srilakshmikanthanp" id="add-unique-constraint-to-session-token">
+    <addUniqueConstraint
+      columnNames="token"
+      constraintName="UC_SESSIONTOKEN_COL"
+      tableName="session"
+    />
+  </changeSet>
+
+  <changeSet author="srilakshmikanthanp" id="add-fk-constraint-to-session-user">
     <addForeignKeyConstraint
       baseColumnNames="user_id"
-      baseTableName="device"
-      constraintName="FKkpkhm9b280xbta2ed92ffapjc"
+      baseTableName="session"
+      constraintName="FK2m443v3f7hel00lraw6xe3bwo"
       deferrable="false"
       initiallyDeferred="false"
       referencedColumnNames="id"
@@ -47,5 +53,4 @@
       onDelete="CASCADE"
     />
   </changeSet>
-
 </databaseChangeLog>
