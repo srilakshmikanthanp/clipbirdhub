@@ -13,7 +13,7 @@ class HubMessageClipboardForwardPayloadHandler(
     payload: HubMessageClipboardForwardPayload
   ) {
     val fromDevice = session.getDevice()
-    val dispatchPayload = HubMessageClipboardDispatchPayload(fromDevice.id!!, payload.content)
+    val dispatchPayload = HubMessageClipboardDispatchPayload(fromDevice.id!!, payload.clipboard)
     val toDevice = deviceService.getById(payload.toDeviceId)
     val targetSession = hubDeviceSessionRegistry.getSessionByDevice(toDevice)
     targetSession.sendMessage(dispatchPayload.toHubMessage())
