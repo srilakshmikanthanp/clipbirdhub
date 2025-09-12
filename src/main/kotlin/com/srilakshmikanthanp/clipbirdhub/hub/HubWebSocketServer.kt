@@ -5,6 +5,7 @@ import com.srilakshmikanthanp.clipbirdhub.common.exception.UnauthorizedException
 import com.srilakshmikanthanp.clipbirdhub.common.extensions.*
 import com.srilakshmikanthanp.clipbirdhub.device.DeviceService
 import com.srilakshmikanthanp.clipbirdhub.nonce.NonceService
+import org.springframework.core.convert.ConversionService
 import org.springframework.scheduling.TaskScheduler
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.CloseStatus
@@ -14,6 +15,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler
 
 @Component
 class HubWebSocketServer(
+  private val conversionService: ConversionService,
   private val taskScheduler: TaskScheduler,
   private val nonceService: NonceService,
   private val hubEventHandler: HubEventHandler,
@@ -21,6 +23,8 @@ class HubWebSocketServer(
 ) : TextWebSocketHandler() {
   private fun handle(session: WebSocketSession, payload: HubMessageNonceChallengeResponsePayload) {
     val device = nonceService.verifyAndConsumeNonce(nonceService.getNonce(payload.nonce), payload.signature)
+    val nonceChallengeCompletedMessage = HubMessageNonceChallengeCompletedPayload(device = conversionService.deviceToDeviceResponseDto(device)).toHubMessage()
+    session.sendMessage(nonceChallengeCompletedMessage)
     session.setNonceChallengeCompletedDevice(device)
     hubEventHandler.afterConnectionEstablished(session.asHubSession())
   }
