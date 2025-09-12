@@ -19,7 +19,7 @@
       <column name="name" type="VARCHAR(255)">
         <constraints nullable="false"/>
       </column>
-      <column name="public_key" type="VARCHAR(255)">
+      <column name="public_key" type="TEXT">
         <constraints nullable="false"/>
       </column>
       <column name="type" type="SMALLINT">

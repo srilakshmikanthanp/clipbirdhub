@@ -27,7 +27,7 @@ data class Device (
   @Column(nullable = false)
   var type: DeviceType,
 
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "TEXT")
   var publicKey: String,
 
   @Column(nullable = false)
