@@ -7,6 +7,8 @@ import com.srilakshmikanthanp.clipbirdhub.hub.HubMessageClipboardForwardPayload
 import com.srilakshmikanthanp.clipbirdhub.hub.HubMessageDeviceAddedPayload
 import com.srilakshmikanthanp.clipbirdhub.hub.HubMessageDeviceRemovedPayload
 import com.srilakshmikanthanp.clipbirdhub.hub.HubMessageDeviceUpdatedPayload
+import com.srilakshmikanthanp.clipbirdhub.hub.HubMessageDevicesPayload
+import com.srilakshmikanthanp.clipbirdhub.hub.HubMessageNonceChallengeCompletedPayload
 import com.srilakshmikanthanp.clipbirdhub.hub.HubMessageNonceChallengeRequestPayload
 import com.srilakshmikanthanp.clipbirdhub.hub.HubMessageNonceChallengeResponsePayload
 import com.srilakshmikanthanp.clipbirdhub.hub.HubMessagePayload
