@@ -23,14 +23,14 @@ fun TextMessage.toHubMessage(): HubMessage<HubMessagePayload> {
 
   val payload = when (type) {
     HubMessageType.NONCE_CHALLENGE_RESPONSE -> objectMapper.treeToValue(payloadNode, HubMessageNonceChallengeResponsePayload::class.java)
-    HubMessageType.CLIPBOARD_SEND -> objectMapper.treeToValue(payloadNode, HubMessageClipboardForwardPayload::class.java)
-    HubMessageType.CLIPBOARD_DELIVER -> objectMapper.treeToValue(payloadNode, HubMessageClipboardDispatchPayload::class.java)
-    HubMessageType.DEVICE_JOINED -> objectMapper.treeToValue(payloadNode, HubMessageDeviceAddedPayload::class.java)
-    HubMessageType.DEVICE_LEFT -> objectMapper.treeToValue(payloadNode, HubMessageDeviceRemovedPayload::class.java)
+    HubMessageType.CLIPBOARD_FORWARD -> objectMapper.treeToValue(payloadNode, HubMessageClipboardForwardPayload::class.java)
+    HubMessageType.CLIPBOARD_DISPATCH -> objectMapper.treeToValue(payloadNode, HubMessageClipboardDispatchPayload::class.java)
+    HubMessageType.DEVICE_ADDED -> objectMapper.treeToValue(payloadNode, HubMessageDeviceAddedPayload::class.java)
+    HubMessageType.DEVICE_REMOVED -> objectMapper.treeToValue(payloadNode, HubMessageDeviceRemovedPayload::class.java)
     HubMessageType.DEVICE_UPDATED -> objectMapper.treeToValue(payloadNode, HubMessageDeviceUpdatedPayload::class.java)
-    HubMessageType.NONCE_CHALLENGE_COMPLETED -> objectMapper.treeToValue(payloadNode, HubMessageNonceChallengeResponsePayload::class.java) // Assuming similar structure
+    HubMessageType.NONCE_CHALLENGE_COMPLETED -> objectMapper.treeToValue(payloadNode, HubMessageNonceChallengeCompletedPayload::class.java)
     HubMessageType.NONCE_CHALLENGE_REQUEST -> objectMapper.treeToValue(payloadNode, HubMessageNonceChallengeRequestPayload::class.java)
-    HubMessageType.HUB_DEVICES -> objectMapper.treeToValue(payloadNode, HubMessagePayload::class.java) // Assuming a generic payload for this type
+    HubMessageType.HUB_DEVICES -> objectMapper.treeToValue(payloadNode, HubMessageDevicesPayload::class.java)
   }
 
   val validator = Validation.buildDefaultValidatorFactory().validator

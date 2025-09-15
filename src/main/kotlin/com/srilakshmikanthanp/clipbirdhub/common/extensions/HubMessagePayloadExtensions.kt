@@ -15,10 +15,10 @@ import com.srilakshmikanthanp.clipbirdhub.hub.HubMessageType
 
 val HubMessagePayload.type: HubMessageType get() = when (this) {
   is HubMessageNonceChallengeResponsePayload -> HubMessageType.NONCE_CHALLENGE_RESPONSE
-  is HubMessageClipboardForwardPayload -> HubMessageType.CLIPBOARD_SEND
-  is HubMessageClipboardDispatchPayload -> HubMessageType.CLIPBOARD_DELIVER
-  is HubMessageDeviceAddedPayload -> HubMessageType.DEVICE_JOINED
-  is HubMessageDeviceRemovedPayload -> HubMessageType.DEVICE_LEFT
+  is HubMessageClipboardForwardPayload -> HubMessageType.CLIPBOARD_FORWARD
+  is HubMessageClipboardDispatchPayload -> HubMessageType.CLIPBOARD_DISPATCH
+  is HubMessageDeviceAddedPayload -> HubMessageType.DEVICE_ADDED
+  is HubMessageDeviceRemovedPayload -> HubMessageType.DEVICE_REMOVED
   is HubMessageDeviceUpdatedPayload -> HubMessageType.DEVICE_UPDATED
   is HubMessageNonceChallengeCompletedPayload -> HubMessageType.NONCE_CHALLENGE_COMPLETED
   is HubMessageNonceChallengeRequestPayload -> HubMessageType.NONCE_CHALLENGE_REQUEST
