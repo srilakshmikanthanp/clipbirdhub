@@ -109,8 +109,22 @@ diffChangelog.dependsOn compileJava
 Properties applicationProps = new Properties()
 applicationProps.load(new FileInputStream("$project.rootDir/src/main/resources/application.properties"))
 
-Properties env = new Properties()
-env.load(new FileInputStream("$project.rootDir/.env"))
+def env = new Properties()
+def envFile = file("$project.rootDir/.env")
+
+if (envFile.exists()) {
+  env.load(new FileInputStream(envFile))
+}
+
+def getEnvValue = { String key ->
+  def sys = System.getenv(key)
+  if (sys != null) return sys
+
+  def fileVal = env.getProperty(key)
+  if (fileVal != null) return fileVal
+
+  throw new GradleException("Required environment variable '${key}' is not set (System env, project property, or .env file).")
+}
 
 liquibase {
   activities {
@@ -118,9 +132,9 @@ liquibase {
       def timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
       referenceUrl "hibernate:spring:com.srilakshmikanthanp.clipbirdhub?dialect=" + applicationProps.getProperty('spring.jpa.properties.hibernate.dialect') + '&hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy'
       changelogFile "$project.rootDir/src/main/resources/db/changelog/local.logs/${timestamp}.xml"
-      url env.getProperty('MASTER_DB_URL')
-      username env.getProperty('MASTER_DB_USERNAME')
-      password env.getProperty('MASTER_DB_PASSWORD')
+      url getEnvValue('MASTER_DB_URL')
+      username getEnvValue('MASTER_DB_USERNAME')
+      password getEnvValue('MASTER_DB_PASSWORD')
     }
   }
 }
