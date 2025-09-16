@@ -41,7 +41,7 @@ class DeviceController(
   @PatchMapping("/{id}")
   fun updateDevice(
     @PathVariable id: String,
-    @Validated(UpdateGroup ::class) req: DeviceRequestDto
+    @RequestBody @Validated(UpdateGroup ::class) req: DeviceRequestDto
   ): DeviceResponseDto {
     val device = deviceMapper.update(req, deviceService.getById(id))
     return conversionService.convert(device, DeviceResponseDto::class.java)!!
