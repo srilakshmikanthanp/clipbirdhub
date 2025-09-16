@@ -5,6 +5,7 @@ object AuthConstants {
     "/auth/forgot-password" to "POST",
     "/auth/reset-password" to "POST",
     "/auth/signin" to "POST",
-    "/users" to "POST"
+    "/users" to "POST",
+    "/health" to "GET",
   )
 }
