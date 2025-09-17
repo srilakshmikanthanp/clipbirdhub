@@ -8,7 +8,11 @@ import org.springframework.stereotype.Service
 @Service
 class DeviceServiceImpl(private val deviceRepository: DeviceRepository) : DeviceService {
   override fun getAllUserDevices(userId: String, search: String?, pageable: Pageable): Page<Device> {
-    return deviceRepository.findAllByUserIdAndNameContainingIgnoreCase(userId, search, pageable)
+    return if (search.isNullOrBlank()) {
+      deviceRepository.findAllByUserId(userId, pageable)
+    } else {
+      deviceRepository.findAllByUserIdAndNameContainingIgnoreCase(userId, search, pageable)
+    }
   }
 
   override fun isUserDevice(userId: String, deviceId: String): Boolean {
