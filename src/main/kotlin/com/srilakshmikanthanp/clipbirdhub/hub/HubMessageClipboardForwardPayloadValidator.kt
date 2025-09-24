@@ -1,7 +1,9 @@
 package com.srilakshmikanthanp.clipbirdhub.hub
 
 import com.srilakshmikanthanp.clipbirdhub.device.DeviceService
+import org.springframework.stereotype.Component
 
+@Component
 @HubMessageValidation
 class HubMessageClipboardForwardPayloadValidator(
   private val deviceService: DeviceService
