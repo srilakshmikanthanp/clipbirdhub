@@ -14,12 +14,12 @@ class HubEventHandlerImpl(
   override fun afterConnectionEstablished(session: HubSession) {
     val deviceAddedPayload = HubMessageDeviceAddedPayload(conversionService.deviceToDeviceResponseDto(session.getDevice()))
     val deviceAddedHubMessage = deviceAddedPayload.toHubMessage()
-    val userDevices = hubDeviceSessionRegistry.getAllSessionsByUser(session.getUser()).map { conversionService.deviceToDeviceResponseDto(session.getDevice()) }
+    val userDevices = hubDeviceSessionRegistry.getAllSessionsByUser(session.getUser()).map { conversionService.deviceToDeviceResponseDto(it.getDevice()) }
     val devicesPayload = HubMessageDevicesPayload(userDevices)
     val devicesHubMessage = devicesPayload.toHubMessage()
     val userSessions = hubDeviceSessionRegistry.getAllSessionsByUser(session.getUser())
-    hubDeviceSessionRegistry.register(session)
     userSessions.forEach { it.sendMessage(deviceAddedHubMessage) }
+    hubDeviceSessionRegistry.register(session)
     session.sendMessage(devicesHubMessage)
   }
 
