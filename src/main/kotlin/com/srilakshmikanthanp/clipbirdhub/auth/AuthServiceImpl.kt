@@ -26,7 +26,7 @@ class AuthServiceImpl(
   private var resetPasswordTokenExpiryTime: Long = 1800L
 
   @Value("\${jwt.token.expiry.login}")
-  private var loginTokenExpiryTime: Long = 36000L
+  private var loginTokenExpiryTime: Long = TimeUnit.DAYS.toSeconds(30)
 
   @Value("\${frontend.url}")
   private lateinit var frontendUrl: String
