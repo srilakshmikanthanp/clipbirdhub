@@ -45,4 +45,16 @@ data class Device (
   @Column(nullable = false)
   @UpdateTimestamp
   var updatedAt: Instant? = null,
-)
+) {
+  override fun equals(other: Any?): Boolean {
+    if (other !is Device) return false
+    if (this.id == null || other.id == null) {
+      throw IllegalStateException("Cannot compare transient Device entities")
+    }
+    return this.id == other.id
+  }
+
+  override fun hashCode(): Int {
+    return this.id?.hashCode() ?: throw IllegalStateException("Cannot calculate hashCode for transient Device entity")
+  }
+}
