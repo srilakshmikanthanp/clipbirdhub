@@ -12,4 +12,4 @@ RUN chmod +x gradlew && ./gradlew clean build -x test
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar app.jar
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]
+ENTRYPOINT ["sh", "-c", "java -Djava.net.preferIPv4Stack=true -Djava.net.debug=all -jar /app/app.jar"]
