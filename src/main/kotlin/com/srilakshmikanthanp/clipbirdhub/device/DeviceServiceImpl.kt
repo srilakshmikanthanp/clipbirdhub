@@ -34,4 +34,8 @@ class DeviceServiceImpl(private val deviceRepository: DeviceRepository) : Device
       deviceRepository.deleteById(deviceId)
     }
   }
+
+  override fun deleteAllByUserId(userId: String) {
+    deviceRepository.deleteAllByUserId(userId)
+  }
 }

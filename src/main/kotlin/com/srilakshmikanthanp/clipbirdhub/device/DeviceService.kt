@@ -10,4 +10,5 @@ interface DeviceService {
   fun getById(deviceId: String): Device
   fun save(device: Device): Device
   fun deleteById(deviceId: String)
+  fun deleteAllByUserId(userId: String)
 }

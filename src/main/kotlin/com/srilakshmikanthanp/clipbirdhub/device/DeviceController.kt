@@ -52,4 +52,9 @@ class DeviceController(
   fun deleteDevice(@PathVariable id: String) {
     deviceService.deleteById(id)
   }
+
+  @DeleteMapping("/all")
+  fun deleteAllDevices() {
+    deviceService.deleteAllByUserId(UserUtility.currentUser.id!!)
+  }
 }
