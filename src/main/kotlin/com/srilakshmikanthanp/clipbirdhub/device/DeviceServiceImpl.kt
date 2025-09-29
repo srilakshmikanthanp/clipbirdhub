@@ -1,6 +1,7 @@
 package com.srilakshmikanthanp.clipbirdhub.device
 
 import com.srilakshmikanthanp.clipbirdhub.common.exception.NotFoundException
+import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -35,6 +36,7 @@ class DeviceServiceImpl(private val deviceRepository: DeviceRepository) : Device
     }
   }
 
+  @Transactional
   override fun deleteAllByUserId(userId: String) {
     deviceRepository.deleteAllByUserId(userId)
   }

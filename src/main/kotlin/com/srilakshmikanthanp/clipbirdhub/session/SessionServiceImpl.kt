@@ -1,6 +1,7 @@
 package com.srilakshmikanthanp.clipbirdhub.session
 
 import com.srilakshmikanthanp.clipbirdhub.common.exception.NotFoundException
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.util.Optional
 
@@ -28,6 +29,7 @@ class SessionServiceImpl(
     }
   }
 
+  @Transactional
   override fun deleteAllExceptTokenByUserId(token: String, userId: String) {
     sessionRepository.deleteAllByTokenNotAndUserId(token, userId)
   }
