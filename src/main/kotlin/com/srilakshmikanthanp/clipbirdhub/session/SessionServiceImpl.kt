@@ -27,4 +27,8 @@ class SessionServiceImpl(
       sessionRepository.deleteById(id)
     }
   }
+
+  override fun deleteAllExceptTokenByUserId(token: String, userId: String) {
+    sessionRepository.deleteAllByTokenNotAndUserId(token, userId)
+  }
 }

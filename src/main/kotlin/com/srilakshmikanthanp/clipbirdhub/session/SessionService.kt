@@ -7,4 +7,5 @@ interface SessionService {
   fun findByToken(token: String): Optional<Session>
   fun save(session: Session): Session
   fun deleteById(id: String)
+  fun deleteAllExceptTokenByUserId(token: String, userId: String)
 }

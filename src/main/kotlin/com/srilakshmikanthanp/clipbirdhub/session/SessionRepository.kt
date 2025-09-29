@@ -6,4 +6,5 @@ import java.util.Optional
 interface SessionRepository: JpaRepository<Session, String> {
   fun findAllByUserId(userId: String): List<Session>
   fun findByToken(token: String): Optional<Session>
+  fun deleteAllByTokenNotAndUserId(token: String, userId: String)
 }

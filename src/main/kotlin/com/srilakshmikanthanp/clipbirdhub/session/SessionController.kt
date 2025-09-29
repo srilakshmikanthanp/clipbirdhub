@@ -21,4 +21,10 @@ class SessionController(
   fun deleteSession(@PathVariable id: String) {
     sessionService.deleteById(id)
   }
+
+  @DeleteMapping("/others" )
+  fun deleteOtherSessions(@RequestHeader("Authorization") authorization: String) {
+    val currentToken = authorization.removePrefix("Bearer ").trim()
+    sessionService.deleteAllExceptTokenByUserId(currentToken, UserUtility.currentUser.id!!)
+  }
 }
