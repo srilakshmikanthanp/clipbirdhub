@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable
 interface DeviceService {
   fun getAllUserDevices(userId: String, search: String?, pageable: Pageable): Page<Device>
   fun isUserDevice(userId: String, deviceId: String): Boolean
+  fun setOnline(deviceId: String, isOnline: Boolean): Device
 
   fun getById(deviceId: String): Device
   fun save(device: Device): Device

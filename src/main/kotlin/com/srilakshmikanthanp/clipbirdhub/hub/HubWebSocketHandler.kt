@@ -14,7 +14,7 @@ import org.springframework.web.socket.WebSocketSession
 import org.springframework.web.socket.handler.TextWebSocketHandler
 
 @Component
-class HubWebSocketServer(
+class HubWebSocketHandler(
   private val conversionService: ConversionService,
   private val taskScheduler: TaskScheduler,
   private val nonceService: NonceService,
@@ -26,7 +26,7 @@ class HubWebSocketServer(
     val nonceChallengeCompletedMessage = HubMessageNonceChallengeCompletedPayload(device = conversionService.deviceToDeviceResponseDto(device)).toHubMessage()
     session.sendMessage(nonceChallengeCompletedMessage)
     session.setNonceChallengeCompletedDevice(device)
-    hubEventHandler.afterConnectionEstablished(session.asHubSession())
+    hubEventHandler.afterVerifiedConnectionEstablished(session.asHubSession())
   }
 
   private fun handle(session: WebSocketSession, message: HubMessage<out HubMessagePayload>) {
@@ -50,6 +50,10 @@ class HubWebSocketServer(
 
   override fun afterConnectionClosed(session: WebSocketSession, status: CloseStatus) {
     if (session.isNonceChallengeCompleted()) hubEventHandler.afterConnectionClosed(session.asHubSession(), status.code, status.reason)
+  }
+
+  override fun handleTransportError(session: WebSocketSession, exception: Throwable) {
+    session.close(CloseStatus.SERVER_ERROR.withReason(exception.message ?: "Unknown error"))
   }
 
   companion object {

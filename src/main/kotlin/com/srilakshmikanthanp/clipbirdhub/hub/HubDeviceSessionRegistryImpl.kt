@@ -32,4 +32,8 @@ class HubDeviceSessionRegistryImpl: HubDeviceSessionRegistry {
       sessionsByDevice.remove(session.getDevice())
     }
   }
+
+  override fun hasSession(session: HubSession): Boolean {
+    return sessionsByDevice.containsKey(session.getDevice())
+  }
 }

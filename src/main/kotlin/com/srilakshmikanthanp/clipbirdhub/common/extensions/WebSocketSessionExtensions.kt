@@ -1,7 +1,6 @@
 package com.srilakshmikanthanp.clipbirdhub.common.extensions
 
 import com.srilakshmikanthanp.clipbirdhub.auth.JwtUserDetails
-import com.srilakshmikanthanp.clipbirdhub.auth.UserPrincipal
 import com.srilakshmikanthanp.clipbirdhub.device.Device
 import com.srilakshmikanthanp.clipbirdhub.hub.HubMessage
 import com.srilakshmikanthanp.clipbirdhub.hub.HubSession
@@ -10,16 +9,16 @@ import com.srilakshmikanthanp.clipbirdhub.user.User
 import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketSession
 
-private enum class WebSocketSessionAttributeKey(val key: String) {
+private enum class WebSocketSessionAttribute(val key: String) {
   DEVICE("DEVICE"),
 }
 
 fun WebSocketSession.getNonceChallengeCompletedDevice(): Device? {
-  return this.attributes[WebSocketSessionAttributeKey.DEVICE.key] as? Device
+  return this.attributes[WebSocketSessionAttribute.DEVICE.key] as? Device
 }
 
 fun WebSocketSession.setNonceChallengeCompletedDevice(device: Device) {
-  this.attributes[WebSocketSessionAttributeKey.DEVICE.key] = device
+  this.attributes[WebSocketSessionAttribute.DEVICE.key] = device
 }
 
 fun WebSocketSession.getNonceChallengeCompletedDeviceOrThrow(): Device {
@@ -27,7 +26,7 @@ fun WebSocketSession.getNonceChallengeCompletedDeviceOrThrow(): Device {
 }
 
 fun WebSocketSession.isNonceChallengeCompleted(): Boolean {
-  return this.attributes.containsKey(WebSocketSessionAttributeKey.DEVICE.key)
+  return this.attributes.containsKey(WebSocketSessionAttribute.DEVICE.key)
 }
 
 fun WebSocketSession.getUser(): User {

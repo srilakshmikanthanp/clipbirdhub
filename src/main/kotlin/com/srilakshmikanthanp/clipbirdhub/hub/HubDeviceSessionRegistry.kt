@@ -8,4 +8,5 @@ interface HubDeviceSessionRegistry {
   fun getAllSessionsByUser(user: User): List<HubSession>
   fun getSessionByDevice(device: Device): HubSession
   fun unregister(session: HubSession)
+  fun hasSession(session: HubSession): Boolean
 }

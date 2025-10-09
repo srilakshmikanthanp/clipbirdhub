@@ -20,6 +20,10 @@ class DeviceServiceImpl(private val deviceRepository: DeviceRepository) : Device
     return deviceRepository.existsByIdAndUserId(deviceId, userId)
   }
 
+  override fun setOnline(deviceId: String, isOnline: Boolean): Device {
+    return deviceRepository.save(getById(deviceId).apply { this.isOnline = isOnline })
+  }
+
   override fun getById(deviceId: String): Device {
     return deviceRepository.findById(deviceId).orElseThrow { NotFoundException("Device with ID $deviceId not found") }
   }

@@ -1,6 +1,6 @@
 package com.srilakshmikanthanp.clipbirdhub.common.config
 
-import com.srilakshmikanthanp.clipbirdhub.hub.HubWebSocketServer
+import com.srilakshmikanthanp.clipbirdhub.hub.HubWebSocketHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.socket.config.annotation.EnableWebSocket
@@ -11,10 +11,10 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 @Configuration
 @EnableWebSocket
 class WebSocketConfig(
-  private val hubWebSocketServer: HubWebSocketServer
+  private val hubWebSocketHandler: HubWebSocketHandler
 ): WebSocketConfigurer {
   override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
-    registry.addHandler(hubWebSocketServer, "hub")
+    registry.addHandler(hubWebSocketHandler, "hub")
   }
 
   @Bean
